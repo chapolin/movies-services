@@ -6,11 +6,11 @@ bodyParser = require('body-parser'),
 Redis = require("./libs/RedisCache").RedisCache,
 routesPath = path.join(__dirname, "routes"), 
 develop = process.env.DEVELOP == true, 
-STRING_CONNECTION = "mongodb://localhost/kotaki",
+STRING_CONNECTION = "mongodb://movies:moviespapass@ds029466.mlab.com:29466/heroku_s999z320",
 redisProperties = null;
 
 if(develop) {
-	STRING_CONNECTION = "mongodb://movies:moviespapass@ds029466.mlab.com:29466/heroku_s999z320";
+	STRING_CONNECTION = "mongodb://localhost/movies";
 }
 
 // Connect to the DB
