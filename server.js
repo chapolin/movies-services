@@ -10,7 +10,7 @@ STRING_CONNECTION = "mongodb://localhost/kotaki",
 redisProperties = null;
 
 if(develop) {
-	STRING_CONNECTION = "mongodb://localhost/movies";
+	STRING_CONNECTION = "mongodb://movies:moviespapass@ds029466.mlab.com:29466/heroku_s999z320";
 }
 
 // Connect to the DB
@@ -26,8 +26,9 @@ MongoClient.connect(STRING_CONNECTION, function(err, db) {
 // Connection to Redis
 if(!develop) {
 	redisProperties = {
-		port: 6379,
-		host: 'localhost'
+		port: 7429,
+		host: "ec2-54-163-233-146.compute-1.amazonaws.com",
+		password: "pbgmpbp29sm94n3r9h8mk47vmg5"
 	};
 }
 
