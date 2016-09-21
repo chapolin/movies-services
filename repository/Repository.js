@@ -36,7 +36,7 @@
   };
   
   Repository.prototype.insert = function(value, callback) {
-    var collection = mongo.collection(this.getCollection()), self = this;
+    var collection = global.mongo.collection(this.getCollection()), self = this;
     
     collection.insert(value, {w:1}, function(error, data) {
         if(!error) {
@@ -53,7 +53,7 @@
   };
   
   Repository.prototype.update = function(key, value, callback) {
-    var collection = mongo.collection(this.getCollection()), 
+    var collection = global.mongo.collection(this.getCollection()), 
         keyRedis = this.getKey() + this.getSeparator() + key, self = this;
     
     this.get(key, function(dataToUpdate) {
@@ -97,7 +97,47 @@
     });
   };
   
-  Repository.prototype.all = function() {};
+  Repository.prototype.getAll = function(field, value, callback) {
+    var collection = global.mongo.collection(this.getCollection()), 
+    key = `${this.getKey()}${this.getSeparator()}all_${value}`, self = this;
+    
+    redis.get(key, function(data) {
+      if(!data[0] && !data.hasOwnProperty("_id")) {
+        var query = {};
+        
+        if(field && value) {
+          query[field] = value;
+        }
+        
+        collection.find(query).toArray(function(error, data) {
+          if(error) {
+            console.error("Error getting all data from mongodb. With id: ", id);
+            
+            data = {error: error, origin: "mongodb"};
+          } else if(data && data.length > 0) {
+            // Saving in Redis
+            redis.put(key, data, self.getTtl());
+          } else {
+            data = {_id: -1, origin: "mongodb", msg: "not found"};
+            
+            // Saving not found in Redis
+            redis.put(key, data, TTL_FIVE_MINUTES);
+          }
+          
+          callback(data);
+        });  
+      } else {
+        callback(data);
+      }
+    });
+  };
+  
+  Repository.prototype.eraseAll = function(value) {
+    var key = `${this.getKey()}${this.getSeparator()}${value}`;
+    
+    // Removing Redis
+    redis.remove(key);
+  };
   
   Repository.prototype.getCollection = function() {
     return this.collecion;
@@ -105,6 +145,10 @@
   
   Repository.prototype.getKey = function() {
     return this.key;
+  };
+  
+  Repository.prototype.getTtl = function() {
+    return this.ttl || TTL_FIVE_MINUTES;
   };
   
   Repository.prototype.getSeparator = function() {

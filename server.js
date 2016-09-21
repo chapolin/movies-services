@@ -1,3 +1,5 @@
+// TODO: Verificar se mongo e redis reconectam
+
 var express = require('express'), fs = require("fs"), path = require("path"),
 app = express(), port = process.env.PORT || 3000, mongo = null,
 mongodb = require('mongodb'), MongoClient = mongodb.MongoClient, 

@@ -34,5 +34,15 @@
       }
     });
     // Crud wish delete: end
+    
+    // Crud wishList list all: start
+    app.get('/wishes/:userId', function(request, response) {
+      if(Util.attrExists(request.params, "userId")) {
+        repository.getAll("userId", request.params.userId, function(wishList) {
+          response.json(wishList);
+        });
+      }
+    });
+    // Crud wishList all: end
   };
 })();
