@@ -36,9 +36,9 @@
     // Crud wish delete: end
     
     // Crud wishList list all: start
-    app.get('/wishes/:userId', function(request, response) {
-      if(Util.attrExists(request.params, "userId")) {
-        repository.getAll("userId", request.params.userId, function(wishList) {
+    app.get('/wishes', function(request, response) {
+      if(Util.attrExists(request.params, "uid")) {
+        repository.getAll("userId", request.params.uid, function(wishList) {
           response.json(wishList);
         });
       }
