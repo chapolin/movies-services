@@ -133,7 +133,7 @@
   };
   
   Repository.prototype.eraseAll = function(value) {
-    var key = `${this.getKey()}${this.getSeparator()}${value}`;
+    var key = `${this.getKey()}${this.getSeparator()}all_${value}`;
     
     // Removing Redis
     redis.remove(key);

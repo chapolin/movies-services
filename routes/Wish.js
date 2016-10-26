@@ -11,8 +11,11 @@
     app.post('/wish', function(request, response) {
       if(Util.attrExists(request.body, "userId") && 
         Util.attrExists(request.body, "movieId")) {
-          
-        var wish = new Wish(request.body.userId, request.body.movieId);
+        
+        var userId = request.body.userId, 
+            wish = new Wish(userId, parseInt(request.body.movieId));
+
+        repository.eraseAll(userId);
 
         repository.insert(wish, function(data) {
           response.json(data);
@@ -36,9 +39,9 @@
     // Crud wish delete: end
     
     // Crud wishList list all: start
-    app.get('/wishes', function(request, response) {
-      if(Util.attrExists(request.params, "uid")) {
-        repository.getAll("userId", request.params.uid, function(wishList) {
+    app.post('/wishes', function(request, response) {
+      if(Util.attrExists(request.body, "uid")) {
+        repository.getAll("userId", request.body.uid, function(wishList) {
           response.json(wishList);
         });
       }
