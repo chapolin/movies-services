@@ -10,8 +10,7 @@
     // Crud wish insert: start
     app.post('/wish', function(request, response) {
       if(Util.attrExists(request.body, "userId") && 
-        Util.attrExists(request.body, "movieId") && 
-        Util.attrExists(request.body, "isWish")) {
+        Util.attrExists(request.body, "movieId")) {
         
         var userId = request.body.userId, isWish = request.body.isWish,
             movieId = parseInt(request.body.movieId),
