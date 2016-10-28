@@ -20,11 +20,11 @@
         repository.checkIfMovieExists(userId, movieId, function(exists) {
           repository.eraseAll(userId);
           
-          if(exists && isWish == "false") {
+          if(exists && !isWish) {
             repository.deleteByMovieId(userId, movieId, function(data) {
               response.json(data);
             });
-          } else if(!exists && isWish == "true") {
+          } else if(!exists && isWish) {
             repository.insert(wish, function(data) {
               response.json(data);
             });
