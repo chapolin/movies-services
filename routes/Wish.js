@@ -10,15 +10,27 @@
     // Crud wish insert: start
     app.post('/wish', function(request, response) {
       if(Util.attrExists(request.body, "userId") && 
-        Util.attrExists(request.body, "movieId")) {
+        Util.attrExists(request.body, "movieId") && 
+        Util.attrExists(request.body, "isWish")) {
         
-        var userId = request.body.userId, 
-            wish = new Wish(userId, parseInt(request.body.movieId));
+        var userId = request.body.userId, isWish = request.body.isWish,
+            movieId = parseInt(request.body.movieId),
+            wish = new Wish(userId, movieId);
 
-        repository.eraseAll(userId);
-
-        repository.insert(wish, function(data) {
-          response.json(data);
+        repository.checkIfMovieExists(userId, movieId, function(exists) {
+          repository.eraseAll(userId);
+          
+          if(exists && isWish == "false") {
+            repository.deleteByMovieId(userId, movieId, function(data) {
+              response.json(data);
+            });
+          } else if(!exists && isWish == "true") {
+            repository.insert(wish, function(data) {
+              response.json(data);
+            });
+          } else {
+            response.json({message: "Isn't necessary do nothing!"});
+          }
         });
       } else {
         response.json({error: "invalid data!"});
