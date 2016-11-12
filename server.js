@@ -26,13 +26,13 @@ MongoClient.connect(STRING_CONNECTION, function(err, db) {
 });
 
 // Connection to Redis
-if(!develop) {
-	redisProperties = {
-		port: 7429,
-		host: "ec2-54-163-233-146.compute-1.amazonaws.com",
-		password: "pbgmpbp29sm94n3r9h8mk47vmg5"
-	};
-}
+// if(!develop) {
+// 	redisProperties = {
+// 		port: 7429,
+// 		host: "ec2-54-163-233-146.compute-1.amazonaws.com",
+// 		password: "pbgmpbp29sm94n3r9h8mk47vmg5"
+// 	};
+// }
 
 Redis(redisProperties);
 
