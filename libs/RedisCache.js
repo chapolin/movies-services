@@ -1,12 +1,17 @@
-var redisConnection = null, Redis = require("ioredis");
+var redisConnection = null;
+var redis = require('redis');
+// .createClient(process.env.REDIS_URL);
 
 var RedisCache = exports.RedisCache = function (properties) {
   if(!redisConnection) {
-    if(properties) {
-      redisConnection = new Redis(properties);
-    } else {
-      redisConnection = new Redis();
-    }
+    // if(properties) {
+    //   redisConnection = new Redis(properties);
+    //   redisConnection = client;
+    // } else {
+    //   redisConnection = new Redis();
+    // }
+    
+    redisConnection = redis.createClient(process.env.REDIS_URL);
     
     redisConnection.on("ready", function() {
 			console.log("Redis is ready!");
@@ -29,7 +34,7 @@ RedisCache.prototype.put = function(key, value, ttl) {
 };
 
 RedisCache.prototype.get = function(key, callback) {
-  this.conn.get(key).then(function(data) {
+  this.conn.get(key, function(error, data) {
     if(data) {
       callback(JSON.parse(data));
     } else {

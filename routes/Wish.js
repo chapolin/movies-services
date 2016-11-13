@@ -55,6 +55,18 @@
         repository.getAll("userId", request.body.uid, function(wishList) {
           response.json(wishList);
         });
+      } else {
+        response.json({error: "WishId not found!"});
+      }
+    });
+    
+    app.get('/wishes', function(request, response) {
+      if(Util.attrExists(request.query, "uid")) {
+        repository.getAll("userId", request.query.uid, function(wishList) {
+          response.json(wishList);
+        });
+      } else {
+        response.json({error: "WishId not found!"});
       }
     });
     // Crud wishList all: end
