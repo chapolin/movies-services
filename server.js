@@ -1,7 +1,6 @@
-// TODO: Verificar se mongo e redis reconectam
-
 var express = require('express'), fs = require("fs"), path = require("path"),
 app = express(), port = process.env.PORT || 3000, mongo = null,
+cors = require('cors'),
 mongodb = require('mongodb'), MongoClient = mongodb.MongoClient, 
 methodOverride = require('method-override'), 
 bodyParser = require('body-parser'),
@@ -42,6 +41,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 app.use(methodOverride('X-HTTP-Method-Override'));
+app.use(cors());
 
 // Comming up routes
 fs.readdirSync(routesPath).forEach(function(file) {
