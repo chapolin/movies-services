@@ -12,7 +12,7 @@
       if(Util.attrExists(request.body, "userId") && 
         Util.attrExists(request.body, "movieId")) {
         
-        var userId = request.body.userId, isWatch = request.body.isWatch,
+        var userId = request.body.userId, isWatch = request.body.status,
             movieId = parseInt(request.body.movieId),
             watch = new UserMovie(userId, movieId);
 
