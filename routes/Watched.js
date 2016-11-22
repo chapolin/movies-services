@@ -18,6 +18,7 @@
 
         repository.checkIfMovieExists(userId, movieId, function(exists) {
           repository.eraseAll(userId);
+          repository.eraseAll(KEY_ALL_WISHES);
           
           if(exists && !Util.isTrue(isWatch)) {
             repository.deleteByMovieId(userId, movieId, function(data) {

@@ -1,6 +1,8 @@
 (function() {
   "use strict";
   
+  const KEY_ALL_WISHES = "*";
+  
   module.exports = function (app) {
     var Redis = require("../libs/RedisCache").RedisCache, redis = new Redis(), 
         WishesRepository = require("../repository/Wishes").WishesRepository, 
@@ -18,6 +20,7 @@
 
         repository.checkIfMovieExists(userId, movieId, function(exists) {
           repository.eraseAll(userId);
+          repository.eraseAll(KEY_ALL_WISHES);
           
           if(exists && !Util.isTrue(isWish)) {
             repository.deleteByMovieId(userId, movieId, function(data) {
@@ -51,7 +54,7 @@
     
     // Crud wishList list all: start
     app.post('/admin/wishes', function(request, response) {
-      repository.getAll("*", function(wishesList) {
+      repository.getAll(KEY_ALL_WISHES, function(wishesList) {
         response.json(wishesList);
       });
     });
