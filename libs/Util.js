@@ -59,4 +59,12 @@
     
     return (number <= 9 ? "0" : "") + number;
   };
+  
+  Util.isTrue = function(value) {
+    var TRUTHY_VALUES = [true, 'true', 1, '1'];
+
+    return TRUTHY_VALUES.some(function(t) {
+        return t === value;
+    });
+  };
 })();

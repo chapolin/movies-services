@@ -19,11 +19,11 @@
         repository.checkIfMovieExists(userId, movieId, function(exists) {
           repository.eraseAll(userId);
           
-          if(exists && !isWatch) {
+          if(exists && !Util.isTrue(isWatch)) {
             repository.deleteByMovieId(userId, movieId, function(data) {
               response.json(data);
             });
-          } else if(!exists && isWatch) {
+          } else if(!exists && Util.isTrue(isWatch)) {
             repository.insert(watch, function(data) {
               response.json(data);
             });
@@ -40,7 +40,7 @@
     // Crud watchedList list all: start
     app.post('/watcheds', function(request, response) {
       if(Util.attrExists(request.body, "uid")) {
-        repository.getAll("userId", request.body.uid, function(watchedList) {
+        repository.getAllByFieldAndValue("userId", request.body.uid, function(watchedList) {
           response.json(watchedList);
         });
       } else {
